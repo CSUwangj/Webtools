@@ -21,6 +21,7 @@
   <div>
     <button onclick="calculate()" id="calculate">Calculate</button>
     <button onclick="draw()" id="draw">Illustrate</button>
+    <button onclick="reset()" id="reset">Reset</button>
   </div>
   <p id="error"></p>
   <p id="sum info"></p>
@@ -86,6 +87,15 @@
       }
       document.getElementById("error").innerHTML = error
     }
+
+    const reset = () => {
+      document.getElementById("all").value = NaN
+      document.getElementById("rest").value = NaN
+      document.getElementById("sum info").innerHTML = ""
+      chart.destroy()
+      validate()
+    }
+
     document.getElementById("all").addEventListener("change", validate)
     document.getElementById("rest").addEventListener("change", validate)
     validate()
