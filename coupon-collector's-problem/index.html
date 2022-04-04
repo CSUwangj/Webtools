@@ -3,15 +3,16 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Coupon Collector&apos;s Problem Calculator</title>
+  <title>Coupon Collector Calculator</title>
   <style>
     #error {
       color: red;
     }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-  <h1>Coupon Collector&apos;s Problem Calculator</h1>
+  <h1>Coupon Collector Calculator</h1>
   <h2>When you want to collect all kinds of items and still have some to get, how many drawings do you need in expectation?</h2>
   <label for="all">There are __ items in total:</label>
   <input id="all" type="number" autocomplete min="1">
@@ -27,6 +28,7 @@
     <canvas id="barChart"></canvas>
   </div>
   <script>
+    let chart = new Chart(document.getElementById("barChart"))
     const calculate = () => {
       const all = parseInt(document.getElementById("all").value)
       const rest = parseInt(document.getElementById("rest").value)
@@ -36,6 +38,7 @@
       }
       const s = expectDraw.reduce((prev, cur) => prev + cur)
       document.getElementById("sum info").innerHTML = "From the perspective of expectation, you need draw " + s + " more times to collect all the items."
+      chart.destroy()
       return expectDraw
     }
 
@@ -59,7 +62,7 @@
         options: {},
         data,
       }
-      const chart = new Chart(document.getElementById("barChart"), config)
+      chart = new Chart(document.getElementById("barChart"), config)
     }
 
     const validate = () => {
@@ -87,6 +90,5 @@
     document.getElementById("rest").addEventListener("change", validate)
     validate()
   </script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
 </html>
