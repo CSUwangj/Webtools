@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>SVG2PNG</title>
+</head>
+
+<body>
+  <h1>SVG to PNG Converter</a></h1>
+  <textarea id="svg" rows="8" cols="70"></textarea><br /><br />
+  <div>Width: <input id="width" type="number" /></div>
+  <div>Height: <input id="height" type="number"></div>
+  <button id="convert" onclick="convert()">Convert SVG to PNG</button><br /><br />
+  <div id="test" style="display: none;"></div>
+  <canvas id="canvas"></canvas>
+  <script>
+    const convert = () => {
+      const svgText = document.getElementById("svg").value;
+      const width = document.getElementById("width").value;
+      const height = document.getElementById("height").value;
+
+      const tt = document.getElementById("test");
+      tt.innerHTML = svgText;
+      const svg = tt.querySelector("svg");
+      svg.setAttribute("height", height);
+      svg.setAttribute("width", width);
+
+      const DOMURL = window.URL || window.webkitURL || window;
+      const canvas = document.getElementById("canvas");
+      canvas.height = height;
+      canvas.width = width;
+
+      const data = new XMLSerializer().serializeToString(svg);
+      const image = new Image();
+      const blob = new Blob([data], {type: 'image/svg+xml;charset=utf-8'});
+      const url = DOMURL.createObjectURL(blob);
+    
+      image.onload = function () {
+        canvas.getContext('2d').drawImage(image, 0, 0);
+        DOMURL.revokeObjectURL(url);
+        const uri = canvas.toDataURL('image/png').replace('image/png', 'octet/stream');
+        const a = document.createElement('a');
+      };
+    
+      image.src = url;
+    }
+  </script>
+</body>
+
+</html>
