@@ -39,10 +39,10 @@
         canvas.getContext('2d').drawImage(image, 0, 0);
         DOMURL.revokeObjectURL(url);
         const uri = canvas.toDataURL('image/png').replace('image/png', 'octet/stream');
-        const a = document.createElement('a');
       };
     
       image.src = url;
+      tt.appendChild(image);
     }
   </script>
 </body>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>SVG2PNG</title>
+</head>
+
+<body>
+  <h1>SVG to PNG Converter</a></h1>
+  <textarea id="input" rows="8" cols="70"></textarea><br /><br />
+  <div>Width: <input id="width" type="number" /></div>
+  <div>Height: <input id="height" type="number"></div>
+  <button id="convert" onclick="convert()">Extract SVG</button><br /><br />
+  <div id="test" style="display: none"></div>
+  <div id="container">
+    <canvas id="canvas"></canvas>
+  </div>
+  <script>
+    const guidGenerator = () => {
+      const S4 = () => (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+      return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
+    }
+
+    const createPNG = (svgText, height, width) => {
+      const tt = document.getElementById("test")
+      
+      tt.appendChild(image);
+      console.log(image);
+    }
+
+    const convert = () => {
+      const input = document.getElementById("input").value;
+      const width = document.getElementById("width").value;
+      const height = document.getElementById("height").value;
+      //document.getElementById("container").innerHTML = "";
+      let html;
+      html = new DOMParser().parseFromString(input, "text/html");
+      if(html.querySelectorAll('div').length == 0) {
+        return;
+      }
+
+      const svgs = Array.from(html.querySelectorAll("svg")).map((e) => e.outerHTML);
+      //for(const svg of svgs) {
+      //  console.log(svg)
+      //}
+      //for(const svg of svgs) {
+      //  createPNG(svg, height, width);
+      //}
+      const tt = document.getElementById("test");
+      const DOMURL = window.URL || window.webkitURL || window;
+      for(const svgText of svgs.slice(0, 1)) {
+        tt.innerHTML = svgText;
+        const svg = tt.querySelector("svg");
+        svg.setAttribute("height", height);
+        svg.setAttribute("width", width);
+  
+        //const container = document.getElementById("container");
+        const canvas = document.getElementById("canvas");
+        //const id = guidGenerator();
+        //canvas.setAttribute("id", id);
+        //container.appendChild(canvas);
+        canvas.height = height;
+        canvas.width = width;
+  
+        const data = new XMLSerializer().serializeToString(svg);
+        const image = new Image();
+        const blob = new Blob([data], {type: 'image/svg+xmlcharset=utf-8'});
+        const url = DOMURL.createObjectURL(blob);
+        
+        image.onload = function() {
+          const canvas = document.getElementById("canvas");
+          canvas.getContext('2d').drawImage(image, 0, 0);
+          DOMURL.revokeObjectURL(url);
+          const uri = canvas.toDataURL('image/png').replace('image/png', 'octet/stream');
+          console.log(image);
+        }
+      
+        image.src = url;
+        tt.appendChild(image);
+      }
+    }
+  </script>
+</body>
+
+</html>
