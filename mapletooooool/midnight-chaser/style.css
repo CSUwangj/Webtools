@@ -1,0 +1,18 @@
+.grid {
+  width:630px;
+  margin: 0 auto;
+  gap: 10px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+img {
+  width:200px;
+}
+
+.draggable-mirror{
+  z-index: 1000;
+    color: #969696;
+}
